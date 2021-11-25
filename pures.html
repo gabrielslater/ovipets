@@ -1,0 +1,436 @@
+<!doctypehtml>
+<html lang=en>
+
+<head>
+    <title>help</title>
+    <style>
+        body {
+            background-color: #e5f0f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: "Trebuchet MS", "Lucida Grande", Verdana, sans-serif;
+        }
+        
+        h1 {
+            margin-block-start: 0
+        }
+        
+        .color-section {
+            width: 50%;
+            background-color: white;
+            padding: 1rem;
+            border: 5px solid #a6c9e2;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+        
+        .catalog {
+            display: grid;
+            gap: 0.5rem;
+            justify-content: space-between;
+            grid-template-columns: auto auto auto auto auto;
+        }
+        
+        .card {
+            display: inline-block;
+            width: 10rem;
+        }
+        
+        #gems .card {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 0.5rem;
+            width: auto;
+            justify-content: start;
+        }
+        
+        #gems .catalog {
+            grid-template-columns: auto auto auto auto !important;
+        }
+        
+        .gem .catalog {
+            display: flex;
+            gap: 0.25rem;
+            flex-direction: column;
+        }
+        
+        #gems .card .color {
+            display: inline-block;
+            height: 2rem;
+            width: 2rem;
+        }
+        
+        .color {
+            display: block;
+            height: 7rem;
+            width: 7rem;
+            margin: 0 0 .5rem 0;
+            border: 1px solid #000
+        }
+    </style>
+</head>
+
+<body>
+    <div class=color-section id=pures>
+        <h1>pures</h1>
+        <div class=catalog>
+        </div>
+    </div>
+    <div class=color-section id=u-pures>
+        <h1>unoffical pures</h1>
+        <div class=catalog>
+        </div>
+    </div>
+    <div class=color-section id=gems>
+        <h1>gems</h1>
+        <div class=catalog>
+        </div>
+    </div>
+    <script>
+        String.prototype.convertToRGB = function() {
+            if (this.length != 6) {
+                // throw "Only six-digit hex colors are allowed.";
+
+                var aRgbHex = this.slice(1).match(/.{1,2}/g);
+                var aRgb = [
+                    parseInt(aRgbHex[0], 16),
+                    parseInt(aRgbHex[1], 16),
+                    parseInt(aRgbHex[2], 16),
+                ];
+                return aRgb;
+            }
+
+            var aRgbHex = this.match(/.{1,2}/g);
+            var aRgb = [
+                parseInt(aRgbHex[0], 16),
+                parseInt(aRgbHex[1], 16),
+                parseInt(aRgbHex[2], 16),
+            ];
+            return aRgb;
+        };
+
+        function color(name, hex) {
+            return {
+                name: name,
+                hex: hex,
+                rgb: hex.convertToRGB()
+            };
+        }
+
+        function DOMcard(color, isGem = false, isGemTwo = false) {
+            if (!isGem) {
+                var card = document.createElement('div');
+                card.className = 'card';
+
+                var colorcard = document.createElement('span');
+                colorcard.className = 'color';
+                colorcard.style.backgroundColor = color.hex;
+
+                var words = document.createElement('span');
+
+                if (isGemTwo) {
+                    words.innerHTML = `${color.hex} (${color.rgb})`;
+                } else {
+                    words.innerHTML = `<b>${color.name}</b><br>${color.hex}<br>(${color.rgb})`;
+                }
+
+                card.appendChild(colorcard);
+                card.appendChild(words);
+
+                return card;
+            } else {
+                var card = document.createElement('div');
+                card.innerHTML = `<h2>${color.name}</h2>`;
+                card.className = 'gem';
+
+                var innergem = document.createElement('div');
+                innergem.className = 'catalog';
+
+                for (color of color.colors) {
+                    innergem.appendChild(DOMcard(color, false, true));
+                }
+
+                card.appendChild(innergem);
+
+                return card;
+            }
+        }
+
+        function gem(name, colors) {
+            return {
+                name: name,
+                colors: colors
+            };
+        }
+
+        function cycle(id, colors, isGem = false) {
+            var section = document
+                .getElementById(id)
+                .getElementsByClassName('catalog')[0];
+
+            if (!isGem) {
+                for (c of colors) {
+                    section.appendChild(DOMcard(c));
+                }
+            } else {
+                for (c of colors) {
+                    section.appendChild(DOMcard(c, true));
+                }
+            }
+        }
+
+        var colors = [];
+
+        colors.push(color("Black", "#000000"));
+        colors.push(color("Gray", "#808080"));
+        colors.push(color("White", "#FFFFFF"));
+        colors.push(color("Floral White", "#FFFAF0"));
+        colors.push(color("Misty Rose", "#FFE4E1"));
+        colors.push(color("Pink", "#FFC0CB"));
+        colors.push(color("Deep Pink", "#FF1493"));
+        colors.push(color("Magenta", "#FF00FF"));
+        colors.push(color("Maroon", "#800000"));
+        colors.push(color("Brown", "#643200"));
+        colors.push(color("Red", "#FF0000"));
+        colors.push(color("Crimson", "#DC143C"));
+        colors.push(color("Red-Orange", "#FF4500"));
+        colors.push(color("Orange", "#FFA500"));
+        colors.push(color("Yellow", "#FFFF00"));
+        colors.push(color("Light Yellow", "#FFFF99"));
+        colors.push(color("Olive", "#808000"));
+        colors.push(color("Emerald", "#008000"));
+        colors.push(color("Shamrock", "#009E60"));
+        colors.push(color("Mint Green", "#98FF98"));
+        colors.push(color("Lime", "#00FF45"));
+        colors.push(color("Green", "#00FF00"));
+        colors.push(color("Cyan", "#00FFFF"));
+        colors.push(color("Pale Cornflower Blue", "#ABCDEF"));
+        colors.push(color("Robin Egg Blue", "#00CCCC"));
+        colors.push(color("Capri/Deep Sky Blue", "#00BFFF"));
+        colors.push(color("Teal", "#008080"));
+        colors.push(color("Blue", "#0000FF"));
+        colors.push(color("Navy", "#000080"));
+        colors.push(color("Indigo", "#4B0082"));
+        colors.push(color("Violet", "#7F00FF"));
+        colors.push(color("Purple", "#800080"));
+        colors.push(color("Lavender", "#CCCCFF"));
+        colors.push(color("Diamond", "#B9F2FF"));
+        colors.push(color("Silver", "#C0C0C0"));
+        colors.push(color("Gold", "#FFD700"));
+        colors.push(color("Bronze", "#CD7F32"));
+
+        cycle("pures", colors);
+
+        colors = [];
+
+        colors.push(color("Dark Red", "#A00000"));
+        colors.push(color("Dark Green", "#00A000"));
+        colors.push(color("Dark Blue", "#0000A0"));
+
+        colors.push(color("Bright Pink", "#FF007F"));
+        colors.push(color("Canary Yellow", "#FFEF00"));
+        colors.push(color("Cadmium Yellow", "#FFF600"));
+        colors.push(color("Amber", "#FFBF00"));
+        colors.push(color("Azure", "#007FFF"));
+        colors.push(color("Guppie Green", "#00FF7F"));
+
+        cycle("u-pures", colors);
+
+        colors = [];
+
+        colors.push(
+            gem("Peridot", [
+                color("Peridot 1", "#32CD32"),
+                color("Peridot 2", "#FFF700"),
+            ])
+        );
+        colors.push(
+            gem("Amethyst", [
+                color("Amethyst 1", "#B57EDC"),
+                color("Amethyst 2", "#8F00FF"),
+            ])
+        );
+        colors.push(
+            gem("Pearl", [
+                color("Pearl 1", "#FFFDD0"),
+                color("Pearl 2", "#F4C2C2"),
+            ])
+        );
+        colors.push(
+            gem("Calcite", [
+                color("Calcite 1", "#E5E4E2"),
+                color("Calcite 2", "#FFFAFA"),
+            ])
+        );
+        colors.push(
+            gem("Angelite", [
+                color("Angelite 1", "#E5E4E2"),
+                color("Angelite 2", "#C3CDE6"),
+            ])
+        );
+        colors.push(
+            gem("Tanzanite", [
+                color("Tanzanite 1", "#0F0F0F"),
+                color("Tanzanite 2", "#0000CF"),
+            ])
+        );
+
+        colors.push(
+            gem("Ruby", [
+                color("Tanzanite 1", "#FF0800"),
+                color("Tanzanite 2", "#800020"),
+                color("Tanzanite 3", "#960018"),
+            ])
+        );
+        colors.push(
+            gem("Jade", [
+                color("Jade 1", "#004225"),
+                color("Jade 2", "#177245"),
+                color("Jade 3", "#32CD32"),
+            ])
+        );
+        colors.push(
+            gem("Agate", [
+                color("Agate 1", "#D2691E"),
+                color("Agate 2", "#FFFDD0"),
+                color("Agate 3", "#964B00"),
+            ])
+        );
+        colors.push(
+            gem("Aquamarine", [
+                color("Aquamarine 1", "#177245"),
+                color("Aquamarine 2", "#00B7EB"),
+                color("Aquamarine 3", "#00CED1"),
+            ])
+        );
+        colors.push(
+            gem("Onyx", [
+                color("Onyx 1", "#36454F"),
+                color("Onyx 2", "#321414"),
+                color("Onyx 3", "#0F0F0F"),
+            ])
+        );
+        colors.push(
+            gem("Amber", [
+                color("Amber 1", "#FFBF00"),
+                color("Amber 2", "#FFF700"),
+                color("Amber 3", "#FF7518"),
+            ])
+        );
+        colors.push(
+            gem("Alexandrite", [
+                color("Alexandrite 1", "#01796F"),
+                color("Alexandrite 2", "#B57EDC"),
+                color("Alexandrite 3", "#F64A8A"),
+            ])
+        );
+        colors.push(
+            gem("Sapphire", [
+                color("Sapphire 1", "#00B7EB"),
+                color("Sapphire 2", "#00008B"),
+                color("Sapphire 3", "#0070FF"),
+            ])
+        );
+        colors.push(
+            gem("Turquoise", [
+                color("Turquoise 1", "#00CED1"),
+                color("Turquoise 2", "#00BFFF"),
+                color("Turquoise 3", "#0070FF"),
+            ])
+        );
+        colors.push(
+            gem("Spinel", [
+                color("Spinel 1", "#8B0000"),
+                color("Spinel 2", "#C71585"),
+                color("Spinel 3", "#FF69B4"),
+            ])
+        );
+        colors.push(
+            gem("Moonstone", [
+                color("Moonstone 1", "#73C2FB"),
+                color("Moonstone 2", "#9BDDFF"),
+                color("Moonstone 3", "#E5E4E2"),
+            ])
+        );
+        colors.push(
+            gem("Tourmaline", [
+                color("Tourmaline 1", "#FF43A4"),
+                color("Tourmaline 2", "#E5E4E2"),
+                color("Tourmaline 3", "#00AD4B"),
+            ])
+        );
+
+        colors.push(
+            gem("Hematite", [
+                color("Hematite 1", "#C4C3D0"),
+                color("Hematite 2", "#778899"),
+                color("Hematite 3", "#36454F"),
+                color("Hematite 4", "#0F0F0F"),
+            ])
+        );
+        colors.push(
+            gem("Opal", [
+                color("Opal 1", "#FFFDD0"),
+                color("Opal 2", "#B57EDC"),
+                color("Opal 3", "#FFBF00"),
+                color("Opal 4", "#00CED1"),
+            ])
+        );
+        colors.push(
+            gem("Sheen Obsidian", [
+                color("Sheen Obsidian 1", "#DAA520"),
+                color("Sheen Obsidian 2", "#D2B48C"),
+                color("Sheen Obsidian 3", "#0C090A"),
+                color("Sheen Obsidian 4", "#616D7E"),
+            ])
+        );
+        colors.push(
+            gem("Rose Quartz", [
+                color("Rose Quartz 1", "#FB607F"),
+                color("Rose Quartz 2", "#FFA6C9"),
+                color("Rose Quartz 3", "#FFCDE8"),
+                color("Rose Quartz 4", "#F4C2C2"),
+            ])
+        );
+        colors.push(
+            gem("Tigers Eye", [
+                color("Tigers Eye 1", "#241200"),
+                color("Tigers Eye 2", "#502800"),
+                color("Tigers Eye 3", "#FFBF00"),
+                color("Tigers Eye 4", "#FF9912"),
+            ])
+        );
+        colors.push(
+            gem("Garnet", [
+                color("Garnet 1", "#8B0000"),
+                color("Garnet 2", "#800020"),
+                color("Garnet 3", "#321414"),
+                color("Garnet 4", "#0F0F0F"),
+            ])
+        );
+
+        colors.push(
+            gem("Fire Opal", [
+                color("Fire Opal 1", "#FF0800"),
+                color("Fire Opal 2", "#0F0F0F"),
+                color("Fire Opal 3", "#002FA7"),
+                color("Fire Opal 4", "#36454F"),
+                color("Fire Opal 5", "#007FFF"),
+            ])
+        );
+        colors.push(
+            gem("Euclase", [
+                color("Euclase 1", "#08457E"),
+                color("Euclase 2", "#0198E1"),
+                color("Euclase 3", "#EEDD82"),
+                color("Euclase 4", "#FFBF00"),
+                color("Euclase 5", "#FF9912"),
+            ])
+        );
+
+        cycle("gems", colors, true);
+    </script>
+</body>
+
+</html>
