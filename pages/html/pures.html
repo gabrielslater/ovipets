@@ -1,42 +1,10 @@
-<!doctypehtml>
-<html lang=en>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title>help</title>
+    <title>pure colors | ovipets fansite</title>
+    <link rel="stylesheet" href="../css/main.css" type="text/css">
     <style>
-        body {
-            background-color: #e5f0f9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: "Trebuchet MS", "Lucida Grande", Verdana, sans-serif;
-        }
-        
-        h1 {
-            margin-block-start: 0
-        }
-        
-        .color-section {
-            width: 50%;
-            background-color: white;
-            padding: 1rem;
-            border: 5px solid #a6c9e2;
-            border-radius: 5px;
-            margin: 1rem 0;
-        }
-        
-        .catalog {
-            display: grid;
-            gap: 0.5rem;
-            justify-content: space-between;
-            grid-template-columns: auto auto auto auto auto;
-        }
-        
-        .card {
-            display: inline-block;
-            width: 10rem;
-        }
-        
         #gems .card {
             display: grid;
             grid-template-columns: auto auto;
@@ -49,16 +17,32 @@
             grid-template-columns: auto auto auto auto !important;
         }
         
-        .gem .catalog {
-            display: flex;
-            gap: 0.25rem;
-            flex-direction: column;
-        }
-        
         #gems .card .color {
             display: inline-block;
             height: 2rem;
             width: 2rem;
+        }
+        
+        .catalog {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            gap: 0.5rem;
+        }
+        
+        .card {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 10rem;
+            text-align: center;
+        }
+        
+        .gem .catalog {
+            display: flex;
+            gap: 0.25rem;
+            flex-direction: column;
+            width: 15rem;
         }
         
         .color {
@@ -72,19 +56,47 @@
 </head>
 
 <body>
-    <div class=color-section id=pures>
-        <h1>pures</h1>
-        <div class=catalog>
+    <div id="sidebar">
+        <div class="content">
+            <ul>
+                <li><a href="index.html">main page</a></li>
+                <li><a href="pures.html">pure color chart</a></li>
+            </ul>
         </div>
     </div>
-    <div class=color-section id=u-pures>
-        <h1>unoffical pures</h1>
-        <div class=catalog>
+    <div id="container">
+        <div class="content" id="pures">
+            <h1>Pures</h1>
+            <div class="catalog">
+            </div>
         </div>
-    </div>
-    <div class=color-section id=gems>
-        <h1>gems</h1>
-        <div class=catalog>
+        <div class="content" id="u-pures">
+            <h1>Unoffical Pures</h1>
+            <div class="catalog">
+            </div>
+        </div>
+        <div class="content" id="gems">
+            <h1>Gems</h1>
+            <h2>Two Colors</h2>
+            <div id="two">
+                <div class="catalog">
+                </div>
+            </div>
+            <h2>Three Colors</h2>
+            <div id="three">
+                <div class="catalog">
+                </div>
+            </div>
+            <h2>Four Colors</h2>
+            <div id="four">
+                <div class="catalog">
+                </div>
+            </div>
+            <h2>Five Colors</h2>
+            <div id="five">
+                <div class="catalog">
+                </div>
+            </div>
         </div>
     </div>
     <script>
@@ -141,7 +153,7 @@
                 return card;
             } else {
                 var card = document.createElement('div');
-                card.innerHTML = `<h2>${color.name}</h2>`;
+                card.innerHTML = `<h3>${color.name}</h3>`;
                 card.className = 'gem';
 
                 var innergem = document.createElement('div');
@@ -276,6 +288,10 @@
             ])
         );
 
+        cycle("two", colors, true);
+
+        colors = [];
+
         colors.push(
             gem("Ruby", [
                 color("Tanzanite 1", "#FF0800"),
@@ -361,6 +377,10 @@
             ])
         );
 
+        cycle("three", colors, true);
+
+        colors = [];
+
         colors.push(
             gem("Hematite", [
                 color("Hematite 1", "#C4C3D0"),
@@ -410,6 +430,10 @@
             ])
         );
 
+        cycle("four", colors, true);
+
+        colors = [];
+
         colors.push(
             gem("Fire Opal", [
                 color("Fire Opal 1", "#FF0800"),
@@ -429,7 +453,7 @@
             ])
         );
 
-        cycle("gems", colors, true);
+        cycle("five", colors, true);
     </script>
 </body>
 
